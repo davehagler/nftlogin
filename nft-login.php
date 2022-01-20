@@ -19,7 +19,6 @@
  * Author:            Dave Hagler
  * Requires at least: 5.0
  * Tested up to:      5.8
- * Author URI:        https://davehagler.github.io/nftlogin/
  * License:           GPL-2.0+
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       nft-login
