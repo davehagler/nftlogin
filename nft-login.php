@@ -45,7 +45,7 @@ define( 'NFT_LOGIN_VERSION', '1.0.0' );
  * This action is documented in includes/class-nft-login-activator.php
  * Full security checks are performed inside the class.
  */
-function plugin_name_activate() {
+function nft_login_activate() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-nft-login-activator.php';
 	Nft_Login_Activator::activate();
 }
@@ -56,13 +56,13 @@ function plugin_name_activate() {
  * This action is documented in includes/class-nft-login-deactivator.php
  * Full security checks are performed inside the class.
  */
-function plugin_name_deactivate() {
+function nft_login_deactivate() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-nft-login-deactivator.php';
 	Nft_Login_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'plugin_name_activate' );
-register_deactivation_hook( __FILE__, 'plugin_name_deactivate' );
+register_activation_hook( __FILE__, 'nft_login_activate' );
+register_deactivation_hook( __FILE__, 'nft_login_deactivate' );
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -82,10 +82,10 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-nft-login.php';
  *
  * @since    1.0.0
  */
-function plugin_name_run() {
+function nft_login_run() {
 
 	$plugin = new Nft_Login();
 	$plugin->run();
 
 }
-plugin_name_run();
+nft_login_run();

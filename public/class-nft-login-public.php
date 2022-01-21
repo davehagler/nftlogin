@@ -82,14 +82,15 @@ class Nft_Login_Public {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-
-        wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/nft-login-public.js', array( 'jquery' ), $this->version, true );
-
 	}
 
 	public function login_enqueue_scripts() {
-        wp_enqueue_script( $this->plugin_name.'_web3', 'https://cdnjs.cloudflare.com/ajax/libs/web3/1.6.1/web3.min.js', null , '1.6.1', true );
+        wp_enqueue_script( $this->plugin_name.'_web3', plugin_dir_url( __FILE__ ) . 'js/web3-1.6.1.min.js', null , '1.6.1', true );
         wp_enqueue_script( $this->plugin_name.'_nftlogin_module', plugin_dir_url( __FILE__ ) . 'js/nft-login-module.js', array( $this->plugin_name.'_web3' ), $this->version, true );
+        wp_enqueue_script( $this->plugin_name.'_evm_chains', plugin_dir_url( __FILE__ ) . 'js/evm-chains-0.2.0-index.min.js', array( $this->plugin_name.'_web3' ), $this->version, true );
+        wp_enqueue_script( $this->plugin_name.'_formatic', plugin_dir_url( __FILE__ ) . 'js/formatic-2.0.6.js', array( $this->plugin_name.'_web3' ), $this->version, true );
+        wp_enqueue_script( $this->plugin_name.'_web_provider', plugin_dir_url( __FILE__ ) . 'js/web3-provider-1.2.1-index.min.js', array( $this->plugin_name.'_web3' ), $this->version, true );
+        wp_enqueue_script( $this->plugin_name.'_webmodal', plugin_dir_url( __FILE__ ) . 'js/webmodal-1.9.0-index.js', array( $this->plugin_name.'_web3' ), $this->version, true );
 	}
 
 	public function user_register($user_id) {
@@ -157,11 +158,6 @@ class Nft_Login_Public {
         <p id="nftlogin_status"></p>
         <br class="clear"/>
 
-        <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script>
-        <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
-        <script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
-        <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
-        <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
         <?php
     }
 }

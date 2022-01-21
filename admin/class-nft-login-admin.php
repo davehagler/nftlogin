@@ -143,24 +143,23 @@ class Nft_Login_Admin {
      * @access 	public
      */
     public function nft_login_setting_address_cb() {
-        //echo '<p>Token address is where the NFT contract is deployed on Ethereum. Only holders of this NFT will be able to register and login to the site.</p>';
         $contractsFile = plugin_dir_path( dirname( __FILE__ ) ) . 'resources/ethereum-contract-addresses.csv';
         $contractAddresses = array_map('str_getcsv', file($contractsFile));
         echo '<select name="nft_login_setting_contracts" id="nft_login_setting_contracts" onchange="">';
         echo '<option value="" selected>Choose one or enter your own</option>';
         foreach($contractAddresses as $contractAddress) {
-            echo '<option value="'.$contractAddress[1].'">'.$contractAddress[0].'</option>';
+            echo '<option value="'.esc_attr($contractAddress[1]).'">'.esc_html($contractAddress[0]).'</option>';
         }
         echo '</select>';
 
     }
     public function nft_login_setting_token_name_cb() {
         $val = get_option( $this->option_name . '_token_name' );
-        echo '<input type="text" size="56" name="' . $this->option_name . '_token_name' . '" id="' . $this->option_name . '_token_name' . '" value="' . $val . '"> ' ;
+        echo '<input type="text" size="56" name="nft_login_setting_token_name' . '" id="nft_login_setting_token_name' . '" value="' . esc_attr($val) . '"> ' ;
     }
     public function nft_login_setting_contract_address_cb() {
         $val = get_option( $this->option_name . '_contract_address' );
-        echo '<input type="text" size="56" name="' . $this->option_name . '_contract_address' . '" id="' . $this->option_name . '_contract_address' . '" value="' . $val . '"> ' ;
+        echo '<input type="text" size="56" name="nft_login_setting_contract_address' . '" id="nft_login_setting_contract_address' . '" value="' . esc_attr($val) . '"> ' ;
         echo '<a href="#" onclick=\'var contractUrl="https://etherscan.io/token/"+document.getElementById("nft_login_setting_contract_address").value;window.open(contractUrl, "_blank");\'>View contract on Etherscan.io</a>';
 
     }
