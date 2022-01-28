@@ -98,6 +98,30 @@ class Nft_Login_Admin {
 
 	}
 
+    public function add_meta_boxes($post_type, $post) {
+        $screens = [ 'post', 'page' ];
+        foreach ( $screens as $screen ) {
+            add_meta_box(
+                'nft_login_box_id',
+                'NFT Content Protection',
+                array($this, 'nft_login_meta_box_cb'),
+                $screen,
+                'side'
+            );
+        }
+    }
+
+    public function save_post_meta_box($post_id) {
+        if (wp_is_post_autosave($post_id) || wp_is_post_revision($post_id) ) {
+            return;
+        }
+        if (isset($_POST['nft_login_enabled'])) {
+            update_post_meta($post_id, 'nft_login_enabled', 'true');
+        } else {
+            update_post_meta($post_id, 'nft_login_enabled', 'false');
+        }
+    }
+
     /**
      * Register the setting parameters
      *
@@ -164,6 +188,15 @@ class Nft_Login_Admin {
 
     }
 
+    public function nft_login_meta_box_cb($post, $args) {
+        $nft_login_enabled = get_post_meta($post->ID, 'nft_login_enabled', true);
+    ?>
+        <p>
+            <input type="checkbox" name="nft_login_enabled" id="nft_login_enabled" value="" <?php if ($nft_login_enabled) { echo "checked"; }  ?> />
+            <label for="nft_login_enabled">Require NFT login</label>
+        </p>
+    <?php
+    }
     /**
      * Include the setting page
      *

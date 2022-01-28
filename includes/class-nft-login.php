@@ -174,6 +174,8 @@ class Nft_Login {
 
         $this->loader->add_action('admin_init', $plugin_admin, 'register_plugin_settings');
 		$this->loader->add_action('admin_menu', $plugin_admin, 'add_menu_page');
+		$this->loader->add_action('add_meta_boxes', $plugin_admin,'add_meta_boxes', 10, 2);
+        $this->loader->add_action('save_post', $plugin_admin,'save_post_meta_box', 10, 1);
 	}
 
     /**
@@ -190,9 +192,6 @@ class Nft_Login {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
-		// login page hooks
-		$this->loader->add_action('login_enqueue_scripts', $plugin_public, 'login_enqueue_scripts');
-
         // registration hooks
         $this->loader->add_action('register_form', $plugin_public, 'register_form');
         $this->loader->add_action('user_register', $plugin_public, 'user_register');
@@ -201,6 +200,10 @@ class Nft_Login {
         // login hooks
         $this->loader->add_action('login_form', $plugin_public, 'register_form');
         $this->loader->add_filter('authenticate', $plugin_public, 'authenticate', 30,3 );
+
+        // protected content hooks
+        $this->loader->add_filter('the_content', $plugin_public, 'protect_content');
+        $this->loader->add_filter('the_excerpt', $plugin_public, 'protect_content');
 	}
 
 	/**

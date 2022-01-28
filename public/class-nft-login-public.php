@@ -82,9 +82,6 @@ class Nft_Login_Public {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-	}
-
-	public function login_enqueue_scripts() {
         wp_enqueue_script( $this->plugin_name.'_web3', plugin_dir_url( __FILE__ ) . 'js/web3-1.6.1.min.js', null , '1.6.1', true );
         wp_enqueue_script( $this->plugin_name.'_nftlogin_module', plugin_dir_url( __FILE__ ) . 'js/nft-login-module.js', array( $this->plugin_name.'_web3' ), $this->version, true );
         wp_enqueue_script( $this->plugin_name.'_evm_chains', plugin_dir_url( __FILE__ ) . 'js/evm-chains-0.2.0-index.min.js', array( $this->plugin_name.'_web3' ), $this->version, true );
@@ -159,5 +156,25 @@ class Nft_Login_Public {
         <br class="clear"/>
 
         <?php
+    }
+
+    public function protect_content($content) {
+        global $post;
+        if ($post->ID) {
+            $nft_login_enabled = get_post_meta($post->ID, 'nft_login_enabled', true);
+            if ($nft_login_enabled == 'true') {
+                $contract_address_setting = get_option('nft_login_setting_contract_address');
+                $token_name_setting = get_option('nft_login_setting_token_name');
+
+                $login_content = '<p class="nftlogin_verify">';
+                $login_content .= 'To view this content you must verify ownership of NFT';
+                $login_content .= '<br><button class="button-secondary button" onclick="NFTLOGIN.connect_and_verify(\'' . $contract_address_setting . '\');return false;">Verify</button>';
+                $login_content .= '</p>';
+                $login_content .= '<input type="hidden" id="nftlogin_address" name="nftlogin_address" value=""/>';
+                $login_content .= '<input type="hidden" id="nftlogin_token_id" name="nftlogin_token_id" value=""/>';
+                return $login_content;
+            }
+        }
+        return $content;
     }
 }
