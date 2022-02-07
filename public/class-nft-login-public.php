@@ -49,6 +49,11 @@ class Nft_Login_Public {
 	 */
 	private $version;
 
+    /**
+     * @var boolean $is_content_verified Has content been verified
+     */
+	private $is_content_verified = false;
+
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -158,6 +163,28 @@ class Nft_Login_Public {
         <?php
     }
 
+    public function check_verified_content() {
+        $cookie_name = 'nftlogin';
+        $cookie_value = md5('nftlogin'. get_site_url());
+
+        // already have unlock cookie
+        if (isset($_COOKIE[$cookie_name]) && $_COOKIE[$cookie_name] == $cookie_value) {
+            return;
+        }
+
+        // submitted verify request, set cookie and return content
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $nftlogin_address = ( ! empty( $_POST['nftlogin_address'] ) ) ? sanitize_text_field( $_POST['nftlogin_address'] ) : '';
+            $nftlogin_token_id = ( ! empty( $_POST['nftlogin_token_id'] ) ) ? sanitize_text_field( $_POST['nftlogin_token_id'] ) : '';
+            if ($nftlogin_address && $nftlogin_token_id && $this->isValidAddress($nftlogin_address)) {
+                setcookie($cookie_name, $cookie_value, strtotime('+1 day'));
+                $this->is_content_verified = true;
+                return;
+            }
+        }
+
+    }
+
     public function protect_content($content) {
         global $post;
         if ($post->ID) {
@@ -165,22 +192,12 @@ class Nft_Login_Public {
             if ($nft_login_enabled == 'true') {
                 $contract_address_setting = get_option('nft_login_setting_contract_address');
                 $token_name_setting = get_option('nft_login_setting_token_name');
-                $cookie_name = 'nftlogin_unlock_'.$post->ID;
-                $cookie_value = md5('nftlogin'.$post->ID);
+                $cookie_name = 'nftlogin';
+                $cookie_value = md5('nftlogin'. get_site_url());
 
                 // already have unlock cookie, return the content
-                if (isset($_COOKIE[$cookie_name]) && $_COOKIE[$cookie_name] == $cookie_value) {
+                if ($this->is_content_verified || (isset($_COOKIE[$cookie_name]) && $_COOKIE[$cookie_name] == $cookie_value)) {
                     return $content;
-                }
-
-                // submitted verify request, set cookie and return content
-                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                    $nftlogin_address = ( ! empty( $_POST['nftlogin_address'] ) ) ? sanitize_text_field( $_POST['nftlogin_address'] ) : '';
-                    $nftlogin_token_id = ( ! empty( $_POST['nftlogin_token_id'] ) ) ? sanitize_text_field( $_POST['nftlogin_token_id'] ) : '';
-                    if ($nftlogin_address && $nftlogin_token_id && $this->isValidAddress($nftlogin_address)) {
-                        setcookie($cookie_name, $cookie_value, strtotime('+1 day'));
-                        return $content;
-                    }
                 }
 
                 // show the verify form

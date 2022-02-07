@@ -202,6 +202,7 @@ class Nft_Login {
         $this->loader->add_filter('authenticate', $plugin_public, 'authenticate', 30,3 );
 
         // protected content hooks
+        $this->loader->add_action('wp_loaded', $plugin_public, 'check_verified_content');
         $this->loader->add_filter('the_content', $plugin_public, 'protect_content');
         $this->loader->add_filter('the_excerpt', $plugin_public, 'protect_content');
 	}
