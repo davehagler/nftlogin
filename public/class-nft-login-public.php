@@ -165,16 +165,51 @@ class Nft_Login_Public {
             if ($nft_login_enabled == 'true') {
                 $contract_address_setting = get_option('nft_login_setting_contract_address');
                 $token_name_setting = get_option('nft_login_setting_token_name');
+                $cookie_name = 'nftlogin_unlock_'.$post->ID;
+                $cookie_value = md5('nftlogin'.$post->ID);
 
-                $login_content = '<p class="nftlogin_verify">';
-                $login_content .= 'To view this content you must verify ownership of NFT';
-                $login_content .= '<br><button class="button-secondary button" onclick="NFTLOGIN.connect_and_verify(\'' . $contract_address_setting . '\');return false;">Verify</button>';
-                $login_content .= '</p>';
+                // already have unlock cookie, return the content
+                if (isset($_COOKIE[$cookie_name]) && $_COOKIE[$cookie_name] == $cookie_value) {
+                    return $content;
+                }
+
+                // submitted verify request, set cookie and return content
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    $nftlogin_address = ( ! empty( $_POST['nftlogin_address'] ) ) ? sanitize_text_field( $_POST['nftlogin_address'] ) : '';
+                    $nftlogin_token_id = ( ! empty( $_POST['nftlogin_token_id'] ) ) ? sanitize_text_field( $_POST['nftlogin_token_id'] ) : '';
+                    if ($nftlogin_address && $nftlogin_token_id && $this->isValidAddress($nftlogin_address)) {
+                        setcookie($cookie_name, $cookie_value, strtotime('+1 day'));
+                        return $content;
+                    }
+                }
+
+                // show the verify form
+                $login_content = '<form id="nftlogin_unlock_'.$post->ID.'" method="POST" >';
+                $login_content .= '<p class="nftlogin_verify">';
+                $login_content .= '<img style="padding:15px" height="60" width="60" src="'.plugin_dir_url( __FILE__ ) . 'image/lock.svg'.'" />';
+                $login_content .= 'This content is protected. Please Verify NFT to view content.';
+                $login_content .= '<button class="button-secondary button" onclick="NFTLOGIN.connect_and_verify(\'' . $contract_address_setting . '\', \'nftlogin_unlock_'.$post->ID.'\');return false;">Verify NFT</button>';
                 $login_content .= '<input type="hidden" id="nftlogin_address" name="nftlogin_address" value=""/>';
                 $login_content .= '<input type="hidden" id="nftlogin_token_id" name="nftlogin_token_id" value=""/>';
+                $login_content .= '<input type="hidden" name="nftlogin_unlock" value="'.$post->ID.'"/>';
+                $login_content .= '<div id="nftlogin_status"></div>';
+                $login_content .= '</p>';
+                $login_content .= '</form>';
                 return $login_content;
             }
         }
         return $content;
     }
+
+    // very simplistic check
+    private function isValidAddress(string $address) {
+        if (preg_match('/^0x[a-fA-F0-9]{40}$/', $address)) {
+            if (preg_match('/^0x[a-f0-9]{40}$/', $address) || preg_match('/^0x[A-F0-9]{40}$/', $address)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }

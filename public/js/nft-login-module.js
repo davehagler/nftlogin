@@ -108,7 +108,7 @@ var NFTLOGIN = (function () {
         }
     }
 
-    nftlogin.connect_and_verify = async function nftlogin_connect_and_verify(addressOfContract) {
+    nftlogin.connect_and_verify = async function nftlogin_connect_and_verify(addressOfContract, submitForm) {
 
         var connectedProvider = await this.connect_wallet();
 
@@ -143,6 +143,10 @@ var NFTLOGIN = (function () {
                             tokenInst.methods.tokenOfOwnerByIndex(accounts[0], 0).call()
                                 .then(tokenId => {
                                     tokenIdElem.value = tokenId;
+                                    if(submitForm) {
+                                        document.getElementById(submitForm).submit();
+                                        return;
+                                    }
                                     set_status('green', 'Verified owner of token '+tokenId);
                                 });
                         } else {
