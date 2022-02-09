@@ -14,7 +14,7 @@
  * Plugin Name:       NFT Login
  * Plugin URI:        https://davehagler.github.io/nftlogin/
  * Description:       Login to Wordpress using NFT's
- * Version:           1.0.0
+ * Version:           1.1.0
  * Author:            Dave Hagler
  * Requires at least: 5.0
  * Tested up to:      5.8
