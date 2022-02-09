@@ -17,6 +17,9 @@ NFT Login requires users to verify NFT ownership in order to register and login 
 Use this plugin to create exclusive content for any NFT collection. Make a discussion board or e-commerce site just for CryptoPunks
 or Bored Ape Yacht Club holders or any other NFT collection. 
 
+Features
+* Require NFT verification to register or login to your site
+* Lock content on specific posts or pages until the user verifies NFT
 
 == Installation ==
 
@@ -29,6 +32,8 @@ or Bored Ape Yacht Club holders or any other NFT collection.
 2. Error if trying to register or login without first verifying NFT
 3. Verify button prompts user to connect wallet
 4. Verified NFT owner can now login
+5. Lock content in the post metadata
+6. Locked content displays in list
 
 == Frequently Asked Questions ==
 
@@ -47,6 +52,14 @@ All NFT collections have a smart contract which created the items in the collect
 
 Search for the collection on [OpenSea](https://opensea.io/). Select any item from the collection. For example [CryptoPunk #8666](https://opensea.io/assets/0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb/8666).
 Expand the details section to find the Contract Address for CryptoPunks is 0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB.
+
+= How do I lock content =
+
+Check the box under NFT Content Protection in the post/page metadata
+
+= Can you add a new feature to this plugin? =
+Yes! Add a support topic or contact me.
+
 
 == Changelog ==
 
