@@ -5,7 +5,6 @@
  * This file is used to markup the admin-facing aspects of the plugin.
  *
  * @link       https://davehagler.github.io/nftlogin/
- * @since      1.0.0
  *
  * @package    Nft_Login
  * @subpackage Nft_Login/admin/partials

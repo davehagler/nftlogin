@@ -3,7 +3,6 @@
  * Register all actions and filters for the plugin
  *
  * @link       https://davehagler.github.io/nftlogin/
- * @since      1.0.0
  *
  * @package    Nft_Login
  * @subpackage Nft_Login/includes
@@ -25,7 +24,6 @@ class Nft_Login_Loader {
 	/**
 	 * The array of actions registered with WordPress.
 	 *
-	 * @since    1.0.0
 	 * @access   protected
 	 * @var      array    $actions    The actions registered with WordPress to fire when the plugin loads.
 	 */
@@ -34,7 +32,6 @@ class Nft_Login_Loader {
 	/**
 	 * The array of filters registered with WordPress.
 	 *
-	 * @since    1.0.0
 	 * @access   protected
 	 * @var      array    $filters    The filters registered with WordPress to fire when the plugin loads.
 	 */
@@ -43,7 +40,6 @@ class Nft_Login_Loader {
 	/**
 	 * The array of shortcode registered with WordPress.
 	 *
-	 * @since    1.0.0
 	 * @access   protected
 	 * @var      array    $shortcodes    The shortcode registered with WordPress to fire when the plugin loads.
 	 */
@@ -52,7 +48,6 @@ class Nft_Login_Loader {
 	/**
 	 * Initialize the collections used to maintain the actions and filters.
 	 *
-	 * @since    1.0.0
 	 */
 	public function __construct() {
 
@@ -65,7 +60,6 @@ class Nft_Login_Loader {
 	/**
 	 * Add a new action to the collection to be registered with WordPress.
 	 *
-	 * @since    1.0.0
 	 * @param    string $hook             The name of the WordPress action that is being registered.
 	 * @param    object $component        A reference to the instance of the object on which the action is defined.
 	 * @param    string $callback         The name of the function definition on the $component.
@@ -79,7 +73,6 @@ class Nft_Login_Loader {
 	/**
 	 * Add a new filter to the collection to be registered with WordPress.
 	 *
-	 * @since    1.0.0
 	 * @param    string $hook             The name of the WordPress filter that is being registered.
 	 * @param    object $component        A reference to the instance of the object on which the filter is defined.
 	 * @param    string $callback         The name of the function definition on the $component.
@@ -93,7 +86,6 @@ class Nft_Login_Loader {
 	/**
 	 * Remove a filter from the collection registered with WordPress.
 	 *
-	 * @since    1.0.0
 	 * @param    string $tag              The filter hook to which the function to be removed is hooked.
 	 * @param    string $class_name       Class name registering the filter callback.
 	 * @param    string $method_to_remove Method name for the filter's callback.
@@ -128,7 +120,6 @@ class Nft_Login_Loader {
 	/**
 	 * Remove an action from the collection registered with WordPress.
 	 *
-	 * @since    1.0.0
 	 * @param    string $tag              The filter hook to which the function to be removed is hooked.
 	 * @param    string $class_name       Class name registering the filter callback.
 	 * @param    string $method_to_remove Method name for the filter's callback.
@@ -143,7 +134,6 @@ class Nft_Login_Loader {
 	/**
 	 * Add a new shortcode to the collection to be registered with WordPress
 	 *
-	 * @since     1.0.0
 	 * @param     string $tag           The name of the new shortcode.
 	 * @param     object $component      A reference to the instance of the object on which the shortcode is defined.
 	 * @param     string $callback       The name of the function that defines the shortcode.
@@ -158,7 +148,6 @@ class Nft_Login_Loader {
 	 * A utility function that is used to register the actions and hooks into a single
 	 * collection.
 	 *
-	 * @since    1.0.0
 	 * @access   private
 	 * @param    array  $hooks            The collection of hooks that is being registered (that is, actions or filters).
 	 * @param    string $hook             The name of the WordPress filter that is being registered.
@@ -185,7 +174,6 @@ class Nft_Login_Loader {
 	/**
 	 * Register the filters and actions with WordPress.
 	 *
-	 * @since    1.0.0
 	 */
 	public function run() {
 

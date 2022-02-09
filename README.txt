@@ -4,7 +4,7 @@ Donate link:
 Tags: login,authentication,web3,nft
 Requires at least: 5.0
 Tested up to: 5.8
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,3 +53,6 @@ Expand the details section to find the Contract Address for CryptoPunks is 0xb47
 = 1.0.0 =
 Initial release
 
+= 1.1.0 =
+Content locking
+Configuration option for registration and login

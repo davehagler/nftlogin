@@ -3,7 +3,6 @@
  * Fired during plugin deactivation
  *
  * @link       https://davehagler.github.io/nftlogin/
- * @since      1.0.0
  *
  * @package    Nft_Login
  * @subpackage Nft_Login/includes
@@ -14,8 +13,6 @@
  *
  * This class defines all code necessary to run during the plugin's deactivation.
  *
- * @todo This should probably be in one "Setup" Class together with Activator class.
- * @since      1.0.0
  * @package    Nft_Login
  * @subpackage Nft_Login/includes
  * @author     Your Name <davehagler@gmail.com>
@@ -25,7 +22,6 @@ class Nft_Login_Deactivator {
 	/**
 	 * The $_REQUEST during plugin activation.
 	 *
-	 * @since    1.0.0
 	 * @access   private
 	 * @var      array    $request    The $_REQUEST array during plugin activation.
 	 */
@@ -34,7 +30,6 @@ class Nft_Login_Deactivator {
 	/**
 	 * The $_REQUEST['plugin'] during plugin activation.
 	 *
-	 * @since    1.0.0
 	 * @access   private
 	 * @var      string    $plugin    The $_REQUEST['plugin'] value during plugin activation.
 	 */
@@ -43,7 +38,6 @@ class Nft_Login_Deactivator {
 	/**
 	 * The $_REQUEST['action'] during plugin activation.
 	 *
-	 * @since    1.0.0
 	 * @access   private
 	 * @var      array    $action    The $_REQUEST[action] value during plugin activation.
 	 */
@@ -55,7 +49,6 @@ class Nft_Login_Deactivator {
 	 * Checks if the plugin was (safely) activated.
 	 * Place to add any custom action during plugin activation.
 	 *
-	 * @since    1.0.0
 	 */
 	public static function deactivate() {
 
@@ -87,7 +80,6 @@ class Nft_Login_Deactivator {
 	 * Gets the $_REQUEST array and checks if necessary keys are set.
 	 * Populates self::request with necessary and sanitized values.
 	 *
-	 * @since    1.0.0
 	 * @return bool|array false or self::$request array.
 	 */
 	private static function get_request() {
@@ -127,7 +119,6 @@ class Nft_Login_Deactivator {
 	 *
 	 * Validates the $_REQUESTed data is matching this plugin and action.
 	 *
-	 * @since    1.0.0
 	 * @param string $plugin The Plugin folder/name.php.
 	 * @return bool false if either plugin or action does not match, else true.
 	 */
@@ -154,7 +145,6 @@ class Nft_Login_Deactivator {
 	 *
 	 * We want no one else but users with activate_plugins or above to be able to active this plugin.
 	 *
-	 * @since    1.0.0
 	 * @return bool false if no caps, else true.
 	 */
 	private static function check_caps() {

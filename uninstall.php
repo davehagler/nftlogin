@@ -19,7 +19,6 @@
  * @todo Consider multisite. Once for a single site in the network, once sitewide.
  *
  * @link       https://davehagler.github.io/nftlogin/
- * @since      1.0.0
  * @package    Nft_Login
  */
 
@@ -32,7 +31,6 @@
  * If no caps,
  * then exit.
  *
- * @since 1.0.0
  */
 function plugin_name_uninstall() {
 

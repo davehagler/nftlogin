@@ -3,7 +3,6 @@
  * The admin-specific functionality of the plugin.
  *
  * @link       https://davehagler.github.io/nftlogin/
- * @since      1.0.0
  *
  * @package    Nft_Login
  * @subpackage Nft_Login/admin
@@ -25,7 +24,6 @@ class Nft_Login_Admin {
 	/**
 	 * The ID of this plugin.
 	 *
-	 * @since    1.0.0
 	 * @access   private
 	 * @var      string    $plugin_name    The ID of this plugin.
 	 */
@@ -34,7 +32,6 @@ class Nft_Login_Admin {
 	/**
 	 * The unique prefix of this plugin.
 	 *
-	 * @since    1.0.0
 	 * @access   private
 	 * @var      string    $plugin_prefix    The string used to uniquely prefix technical functions of this plugin.
 	 */
@@ -43,7 +40,6 @@ class Nft_Login_Admin {
 	/**
 	 * The version of this plugin.
 	 *
-	 * @since    1.0.0
 	 * @access   private
 	 * @var      string    $version    The current version of this plugin.
 	 */
@@ -52,7 +48,6 @@ class Nft_Login_Admin {
     /**
      * The options name to be used in this plugin
      *
-     * @since  	1.0.0
      * @access 	private
      * @var  	string 		$option_name 	Option name of this plugin
      */
@@ -61,7 +56,6 @@ class Nft_Login_Admin {
     /**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    1.0.0
 	 * @param      string $plugin_name       The name of this plugin.
 	 * @param      string $plugin_prefix    The unique prefix of this plugin.
 	 * @param      string $version    The version of this plugin.
@@ -77,7 +71,6 @@ class Nft_Login_Admin {
 	/**
 	 * Register the stylesheets for the admin area.
 	 *
-	 * @since    1.0.0
 	 * @param string $hook_suffix The current admin page.
 	 */
 	public function enqueue_styles( $hook_suffix ) {
@@ -89,7 +82,6 @@ class Nft_Login_Admin {
 	/**
 	 * Register the JavaScript for the admin area.
 	 *
-	 * @since    1.0.0
 	 * @param string $hook_suffix The current admin page.
 	 */
 	public function enqueue_scripts( $hook_suffix ) {
@@ -98,6 +90,9 @@ class Nft_Login_Admin {
 
 	}
 
+	/**
+     * Adds checkbox to posts and pages to lock content
+     */
     public function add_meta_boxes($post_type, $post) {
         $screens = [ 'post', 'page' ];
         foreach ( $screens as $screen ) {
@@ -111,6 +106,10 @@ class Nft_Login_Admin {
         }
     }
 
+    /**
+     * Saves value of the content lock checkbox when post is saved
+     * @param $post_id
+     */
     public function save_post_meta_box($post_id) {
         if (wp_is_post_autosave($post_id) || wp_is_post_revision($post_id) ) {
             return;
@@ -125,7 +124,6 @@ class Nft_Login_Admin {
     /**
      * Register the setting parameters
      *
-     * @since  	1.0.0
      * @access 	public
      */
     public function register_plugin_settings() {
@@ -158,12 +156,31 @@ class Nft_Login_Admin {
         register_setting($this->plugin_name,
             $this->option_name . '_contract_address',
             'string');
+
+        // Configuration section
+        add_settings_section(
+            $this->option_name. '_configuration',
+            __( 'Plugin Configuration', 'nft-login' ),
+            array( $this, $this->option_name . '_configuration_cb' ),
+            $this->plugin_name
+        );
+        add_settings_field(
+            $this->option_name . '_reg_login',
+            __('Registration and Login', 'nft-login'),
+            array($this, $this->option_name . '_reg_login_cb'),
+            $this->plugin_name,
+            $this->option_name . '_configuration',
+            array('label_for' => $this->option_name . '_reg_login')
+        );
+        register_setting($this->plugin_name,
+            $this->option_name . '_reg_login',
+            'string');
+
     }
 
     /**
      * Render the text for the address section
      *
-     * @since  	1.0.0
      * @access 	public
      */
     public function nft_login_setting_address_cb() {
@@ -185,14 +202,22 @@ class Nft_Login_Admin {
         $val = get_option( $this->option_name . '_contract_address' );
         echo '<input type="text" size="56" name="nft_login_setting_contract_address' . '" id="nft_login_setting_contract_address' . '" value="' . esc_attr($val) . '"> ' ;
         echo '<a href="#" onclick=\'var contractUrl="https://etherscan.io/token/"+document.getElementById("nft_login_setting_contract_address").value;window.open(contractUrl, "_blank");\'>View contract on Etherscan.io</a>';
-
+    }
+    public function nft_login_setting_reg_login_cb() {
+        $reg_login = get_option( $this->option_name . '_reg_login' );
+        $checked = '';
+        if ($reg_login == 'enabled') {
+            $checked = "checked";
+        }
+        echo '<input type="checkbox" name="nft_login_setting_reg_login" id="nft_login_setting_reg_login" value="enabled" '.$checked.' />';
+        echo '&nbsp;<label for="nft_login_setting_reg_login">Check this to require users to verify NFT ownership when registering/logging in to the site. Does not apply to admin users.</label>';
     }
 
     public function nft_login_meta_box_cb($post, $args) {
         $nft_login_enabled = get_post_meta($post->ID, 'nft_login_enabled', true);
     ?>
         <p>
-            <input type="checkbox" name="nft_login_enabled" id="nft_login_enabled" value="" <?php if ($nft_login_enabled) { echo "checked"; }  ?> />
+            <input type="checkbox" name="nft_login_enabled" id="nft_login_enabled" value="1" <?php if ($nft_login_enabled == 'true') { echo "checked"; }  ?> />
             <label for="nft_login_enabled">Require NFT login</label>
         </p>
     <?php
@@ -200,7 +225,6 @@ class Nft_Login_Admin {
     /**
      * Include the setting page
      *
-     * @since  1.0.0
      * @access public
      */
     function nft_login_init(){
@@ -214,4 +238,19 @@ class Nft_Login_Admin {
         add_menu_page('NFT Login Plugin', 'NFT Login Plugin', 'manage_options', 'nft_login_plugin', array($this,'nft_login_init'));
     }
 
+    /**
+     * Add a column to the posts page to show if post is content locked
+     */
+    public function add_post_column($columns) {
+        return array_merge($columns, ['nftlogin_login' => __('NFT Login', 'nft-login')]);
+    }
+
+    public function display_post_column($column_key, $post_id) {
+        if ($column_key == 'nftlogin_login') {
+            $nft_login_enabled = get_post_meta($post_id, 'nft_login_enabled', true);
+            if ($nft_login_enabled == 'true') {
+                _e('Content locked', 'nft-login');
+            }
+        }
+    }
 }
