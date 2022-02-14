@@ -185,8 +185,9 @@ class Nft_Login {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+        $this->loader->add_action( 'login_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
-        if (get_option( $this->option_name . '_reg_login' ) == 'enabled') {
+        if (get_option( 'nft_login_setting_reg_login' ) == 'enabled') {
             // registration hooks
             $this->loader->add_action('register_form', $plugin_public, 'register_form');
             $this->loader->add_action('user_register', $plugin_public, 'user_register');
