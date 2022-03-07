@@ -108,7 +108,7 @@ var NFTLOGIN = (function () {
         }
     }
 
-    nftlogin.connect_and_verify = async function nftlogin_connect_and_verify(addressOfContract, submitForm) {
+    nftlogin.connect_and_verify = async function nftlogin_connect_and_verify(addressOfContract, submitForm, chainId, chainName) {
 
         var connectedProvider = await this.connect_wallet();
 
@@ -122,6 +122,11 @@ var NFTLOGIN = (function () {
         }
         
         var web3 = new Web3(Web3.givenProvider);
+
+        if (web3.currentProvider.chainId !== chainId) {
+            set_status('red', 'Wallet is not connected to ' + chainName + ' network');
+            return;
+        }
 
         const tokenInst = new web3.eth.Contract(tokenABI, addressOfContract);
 
@@ -152,6 +157,9 @@ var NFTLOGIN = (function () {
                         } else {
                             set_status('red', 'Connected address does not own token');
                         }
+                    })
+                    .catch(err => {
+                        console.log(err)
                     });
             });
     }

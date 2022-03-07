@@ -4,7 +4,7 @@ Donate link:
 Tags: login,authentication,web3,nft
 Requires at least: 5.0
 Tested up to: 5.9
-Stable tag: 1.1.1
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,3 +72,6 @@ Configuration option for registration and login
 
 = 1.1.1 =
 Fix bug in configuration for registration and login
+
+= 1.2.0 =
+Support for Polygon blockchain

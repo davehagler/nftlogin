@@ -53,6 +53,10 @@ class Nft_Login_Admin {
      */
     private $option_name = 'nft_login_setting';
 
+    private $utils;
+
+    private $is_validated = false;
+
     /**
 	 * Initialize the class and set its properties.
 	 *
@@ -65,7 +69,7 @@ class Nft_Login_Admin {
 		$this->plugin_name   = $plugin_name;
 		$this->plugin_prefix = $plugin_prefix;
 		$this->version = $version;
-
+        $this->utils = new Nft_Login_Util();
 	}
 
 	/**
@@ -150,12 +154,32 @@ class Nft_Login_Admin {
             $this->option_name . '_address',
             array('label_for' => $this->option_name . '_contract_address')
         );
+        add_settings_field(
+            $this->option_name . '_chain',
+            __('Blockchain', 'nft-login'),
+            array($this, $this->option_name . '_chain_cb'),
+            $this->plugin_name,
+            $this->option_name . '_address',
+            array('label_for' => $this->option_name . '_chain')
+        );
         register_setting($this->plugin_name,
             $this->option_name . '_token_name',
-            'string');
+            [
+                'type'              => 'string',
+                'sanitize_callback' => array( $this, $this->option_name . '_validate_options_cb' ),
+            ]);
         register_setting($this->plugin_name,
             $this->option_name . '_contract_address',
-            'string');
+            [
+                'type'              => 'string',
+                'sanitize_callback' => array( $this, $this->option_name . '_validate_options_cb' ),
+            ]);
+        register_setting($this->plugin_name,
+            $this->option_name . '_chain',
+            [
+                'type'              => 'string',
+                'sanitize_callback' => array( $this, $this->option_name . '_validate_options_cb' ),
+            ]);
 
         // Configuration section
         add_settings_section(
@@ -178,6 +202,18 @@ class Nft_Login_Admin {
 
     }
 
+    public function nft_login_setting_validate_options_cb($data) {
+
+        if (!$this->is_validated) {
+            if (!$this->utils->verify_contract_exists($_POST['nft_login_setting_contract_address'], $_POST['nft_login_setting_chain'])) {
+                add_settings_error($this->option_name, $this->option_name. '_contract_address',
+                    __('Contract Address not found on '.sanitize_text_field($this->utils->chain_id_to_name($_POST['nft_login_setting_chain'])), 'nft-login'), 'error');
+            }
+            $this->is_validated = true;
+        }
+        return $data;
+
+    }
     /**
      * Render the text for the address section
      *
@@ -201,8 +237,15 @@ class Nft_Login_Admin {
     public function nft_login_setting_contract_address_cb() {
         $val = get_option( $this->option_name . '_contract_address' );
         echo '<input type="text" size="56" name="nft_login_setting_contract_address' . '" id="nft_login_setting_contract_address' . '" value="' . esc_attr($val) . '"> ' ;
-        echo '<a href="#" onclick=\'var contractUrl="https://etherscan.io/token/"+document.getElementById("nft_login_setting_contract_address").value;window.open(contractUrl, "_blank");\'>View contract on Etherscan.io</a>';
     }
+    public function nft_login_setting_chain_cb() {
+        $val = get_option( $this->option_name . '_chain' );
+        echo '<select name="nft_login_setting_chain" id="nft_login_setting_chain">';
+        echo '<option value="'.Nft_login_Util::ETHEREUM_CHAIN_ID.'" '.($val==Nft_login_Util::ETHEREUM_CHAIN_ID?'selected':'').'>Ethereum</option>';
+        echo '<option value="'.Nft_login_Util::POLYGON_CHAIN_ID.'" '.($val==Nft_login_Util::POLYGON_CHAIN_ID?'selected':'').'>Polygon</option>';
+        echo '</select>';
+    }
+
     public function nft_login_setting_reg_login_cb() {
         $reg_login = get_option( $this->option_name . '_reg_login' );
         $checked = '';

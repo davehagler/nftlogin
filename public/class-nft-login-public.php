@@ -50,7 +50,9 @@ class Nft_Login_Public {
      */
 	private $is_content_verified = false;
 
-	/**
+    private $utils;
+
+    /**
 	 * Initialize the class and set its properties.
 	 *
 	 * @param      string $plugin_name      The name of the plugin.
@@ -62,6 +64,7 @@ class Nft_Login_Public {
 		$this->plugin_name   = $plugin_name;
 		$this->plugin_prefix = $plugin_prefix;
 		$this->version = $version;
+        $this->utils = new Nft_Login_Util();
 
 	}
 
@@ -142,11 +145,16 @@ class Nft_Login_Public {
         $nftlogin_address = ( ! empty( $_POST['nftlogin_address'] ) ) ? sanitize_text_field( $_POST['nftlogin_address'] ) : '';
         $nftlogin_token_id = ( ! empty( $_POST['nftlogin_token_id'] ) ) ? sanitize_text_field( $_POST['nftlogin_token_id'] ) : '';
         $contract_address_setting = get_option('nft_login_setting_contract_address');
+        $chain_id_setting = get_option('nft_login_setting_chain');
+        // default for older versions of plugin
+        if ($chain_id_setting == false) {
+            $chain_id_setting = Nft_Login_Util::ETHEREUM_CHAIN_ID;
+        }
         $token_name_setting = get_option('nft_login_setting_token_name');
         ?>
         <p class="nftlogin_verify">
-            <label>Verify ownership of <a href="#" onclick='var contractUrl="https://etherscan.io/token/<?= $contract_address_setting ?>";window.open(contractUrl, "_blank");'><?= $token_name_setting ?></a> NFT</label>
-            <button class="button-secondary button" onclick="NFTLOGIN.connect_and_verify('<?= $contract_address_setting ?>');return false;">Verify</button>
+            <button class="button-secondary button" onclick="NFTLOGIN.connect_and_verify('<?= $contract_address_setting ?>', null, '<?= $chain_id_setting ?>','<?= $this->utils->chain_id_to_name($chain_id_setting) ?>');return false;">Verify</button>
+            <span> ownership of <?= $token_name_setting ?> NFT</span>
         </p>
         <input type="hidden" id="nftlogin_address" name="nftlogin_address" value="<?php echo esc_attr(  $nftlogin_address  ); ?>"/>
         <input type="hidden" id="nftlogin_token_id" name="nftlogin_token_id" value="<?php echo esc_attr(  $nftlogin_token_id  ); ?>"/>
@@ -185,6 +193,7 @@ class Nft_Login_Public {
             if ($nft_login_enabled == 'true') {
                 $contract_address_setting = get_option('nft_login_setting_contract_address');
                 $token_name_setting = get_option('nft_login_setting_token_name');
+                $chain_id_setting = get_option('nft_login_setting_chain');
                 $cookie_name = 'nftlogin';
                 $cookie_value = md5('nftlogin'. get_site_url());
 
@@ -198,7 +207,7 @@ class Nft_Login_Public {
                 $login_content .= '<p class="nftlogin_verify">';
                 $login_content .= '<img style="padding:15px" height="60" width="60" src="'.plugin_dir_url( __FILE__ ) . 'image/lock.svg'.'" />';
                 $login_content .= 'This content is protected. Please Verify NFT to view content.';
-                $login_content .= '<button class="button-secondary button" onclick="NFTLOGIN.connect_and_verify(\'' . $contract_address_setting . '\', \'nftlogin_unlock_'.$post->ID.'\');return false;">Verify NFT</button>';
+                $login_content .= '<button class="button-secondary button" onclick="NFTLOGIN.connect_and_verify(\'' . $contract_address_setting . '\', \'nftlogin_unlock_'.$post->ID.'\', \''.$chain_id_setting.'\',\''.$this->utils->chain_id_to_name($chain_id_setting).'\');return false;">Verify NFT</button>';
                 $login_content .= '<input type="hidden" id="nftlogin_address" name="nftlogin_address" value=""/>';
                 $login_content .= '<input type="hidden" id="nftlogin_token_id" name="nftlogin_token_id" value=""/>';
                 $login_content .= '<input type="hidden" name="nftlogin_unlock" value="'.$post->ID.'"/>';
