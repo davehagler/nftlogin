@@ -39,7 +39,7 @@ Features
 
 = Which NFT collections can be used? =
 
-Any collection on Ethereum! All you need is the public contract address which is easily findable on [Etherscan](https://etherscan.io/) and [OpenSea](https://opensea.io/)
+Any NFT collection on Ethereum or Polygon. All you need is the public contract address which is easily findable on sites like [Etherscan](https://etherscan.io/) or [OpenSea](https://opensea.io/)
 
 = Do I need to own an NFT from the collection? =
 
