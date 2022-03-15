@@ -114,7 +114,9 @@ class Nft_Login_Public {
 
     public function authenticate( $user, $username, $password) {
 
-	    $isAdministrator = in_array('administrator', $user->roles);
+	    if (isset($user->roles)) {
+            $isAdministrator = in_array('administrator', $user->roles);
+        }
 	    $isEmptyAddress = empty($_POST['nftlogin_address']) || !empty($_POST['nftlogin_address']) && trim($_POST['nftlogin_address']) == '';
         $isLoginError = $user instanceof WP_Error;
 

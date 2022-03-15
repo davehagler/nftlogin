@@ -4,7 +4,7 @@ Donate link:
 Tags: login,authentication,web3,nft
 Requires at least: 5.0
 Tested up to: 5.9
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,3 +78,6 @@ Support for Polygon blockchain
 
 = 1.2.1 =
 Bug fix missing function
+
+= 1.2.2 =
+Php 8 bug fix
