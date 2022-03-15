@@ -230,6 +230,9 @@ class Nft_Login_Admin {
         echo '</select>';
 
     }
+    public function nft_login_setting_configuration_cb() {
+    }
+
     public function nft_login_setting_token_name_cb() {
         $val = get_option( $this->option_name . '_token_name' );
         echo '<input type="text" size="56" name="nft_login_setting_token_name' . '" id="nft_login_setting_token_name' . '" value="' . esc_attr($val) . '"> ' ;
