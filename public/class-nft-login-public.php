@@ -129,16 +129,6 @@ class Nft_Login_Public {
             return $user;
         }
 
-        if(isset($user->ID)) {
-            $user_meta = get_user_meta($user->ID);
-            $addressMatch = $_POST['nftlogin_address'] == $user_meta['nftlogin_address'][0];
-            $contractMatch = get_option('nft_login_setting_contract_address') == $user_meta['nftlogin_contract_address'][0];
-            if (!$addressMatch || !$contractMatch) {
-                $user  = new WP_Error( 'authentication_failed', __( 'ERROR: Verified NFT does not match registered user.' ) );
-                return $user;
-            }
-        }
-
         return $user;
     }
 

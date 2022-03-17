@@ -14,7 +14,7 @@
  * Plugin Name:       NFT Login
  * Plugin URI:        https://davehagler.github.io/nftlogin/
  * Description:       Login to Wordpress using NFT's
- * Version:           1.2.2
+ * Version:           1.2.3
  * Author:            Dave Hagler
  * Requires at least: 5.0
  * Tested up to:      5.8
@@ -34,7 +34,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'NFT_LOGIN_VERSION', '1.2.2' );
+define( 'NFT_LOGIN_VERSION', '1.2.3' );
 
 !defined('NFT_LOGIN_PATH') && define('NFT_LOGIN_PATH', plugin_dir_path( __FILE__ ));
 
