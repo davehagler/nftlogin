@@ -4,7 +4,7 @@ Donate link:
 Tags: login,authentication,web3,nft
 Requires at least: 5.0
 Tested up to: 5.9
-Stable tag: 1.2.3
+Stable tag: 1.2.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -84,3 +84,6 @@ Php 8 bug fix
 
 = 1.2.3 =
 Removed "Verified NFT does not match registered user" check
+
+= 1.2.4 =
+Fix compatibility with non ERC721 tokens

@@ -146,18 +146,21 @@ var NFTLOGIN = (function () {
                             tokenInst.methods.tokenOfOwnerByIndex(accounts[0], 0).call()
                                 .then(tokenId => {
                                     tokenIdElem.value = tokenId;
+                                    set_status('green', 'Verified owner of token '+tokenId);
+                                })
+                                .catch(e=> console.log('Error in tokenOfOwnerByIndex ' + e))
+                                .finally(()=> {
                                     if(submitForm) {
                                         document.getElementById(submitForm).submit();
                                         return;
                                     }
-                                    set_status('green', 'Verified owner of token '+tokenId);
-                                });
+                                })
                         } else {
                             set_status('red', 'Connected address does not own token');
                         }
                     })
                     .catch(err => {
-                        console.log(err)
+                        console.log('Error in balanceOf '+ err);
                     });
             });
     }

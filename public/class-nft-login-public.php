@@ -104,8 +104,8 @@ class Nft_Login_Public {
     public function registration_errors( $errors, $sanitized_user_login, $user_email ) {
         $missing_address = empty($_POST['nftlogin_address']) || !empty($_POST['nftlogin_address']) && trim($_POST['nftlogin_address']) == '';
         $missing_token_id = empty($_POST['nftlogin_token_id']) || !empty($_POST['nftlogin_token_id']) && trim($_POST['nftlogin_token_id']) == '';
-
-        if ($missing_address || $missing_token_id) {
+        // skip verify missing token id because some contracts don't implement tokenOfOwnerByIndex
+        if ($missing_address) {
             $errors->add('nft_owner_error', sprintf('<strong>%s</strong>: %s', __('Error'), __('Please verify nft ownership')));
         }
 
@@ -169,7 +169,8 @@ class Nft_Login_Public {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nftlogin_address = ( ! empty( $_POST['nftlogin_address'] ) ) ? sanitize_text_field( $_POST['nftlogin_address'] ) : '';
             $nftlogin_token_id = ( ! empty( $_POST['nftlogin_token_id'] ) ) ? sanitize_text_field( $_POST['nftlogin_token_id'] ) : '';
-            if ($nftlogin_address && $nftlogin_token_id && $this->isValidAddress($nftlogin_address)) {
+            // skip verification of nftlogin_token_id because some contracts don't implement tokenOfOwnerByIndex
+            if ($nftlogin_address && $this->isValidAddress($nftlogin_address)) {
                 setcookie($cookie_name, $cookie_value, strtotime('+1 day'));
                 $this->is_content_verified = true;
                 return;
